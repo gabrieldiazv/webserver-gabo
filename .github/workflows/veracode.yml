@@ -19,29 +19,26 @@ jobs:
 
     steps:
       - run: echo "inicio creacion zip"
-      - run: ls
-      - run: mkdir zips
       - uses: actions/checkout@master
       - name: Archive Release
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          filename: 'zips/release.zip'
+          filename: 'release.zip'
           exclusions: '*.git* /*node_modules/* .editorconfig *.github*'
       - run: echo "fin zip"
-      - run: ls
 
-      - name: Check out main branch
-        uses: actions/checkout@v2
+      # - name: Check out main branch
+      #   uses: actions/checkout@v2
 
-      - name: Veracode Upload And Scan
-        uses: veracode/veracode-uploadandscan-action@0.2.1
-        with:
-          appname: "Demo"
-          createprofile: false
-          filepath: "release.zip"
-          vid: "fb89935f9488375f52cdf8e8981621c1"
-          vkey: "9d57b45f85775eecaa3f69502553fb22c718911e3ea645642da7c620d0fc51855b47a933444b513db0be39f0a994f679ea6bd2fe8462088538d34942c2559d5e"
+      # - name: Veracode Upload And Scan
+      #   uses: veracode/veracode-uploadandscan-action@0.2.1
+      #   with:
+      #     appname: "Demo"
+      #     createprofile: false
+      #     filepath: "release.zip"
+      #     vid: "fb89935f9488375f52cdf8e8981621c1"
+      #     vkey: "9d57b45f85775eecaa3f69502553fb22c718911e3ea645642da7c620d0fc51855b47a933444b513db0be39f0a994f679ea6bd2fe8462088538d34942c2559d5e"
 #          createsandbox: 'true'
 #          sandboxname: 'SANDBOXNAME'
 #          scantimeout: 0
