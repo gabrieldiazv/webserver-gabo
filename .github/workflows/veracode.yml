@@ -13,7 +13,7 @@ jobs:
       - name: Veracode Upload And Scan
         uses: veracode/veracode-uploadandscan-action@0.2.1
         with:
-          appname: 'VeraDemo'
+          appname: 'Demo'
           createprofile: false
           filepath: 'prueba.zip'
           vid: 'fb89935f9488375f52cdf8e8981621c1'
