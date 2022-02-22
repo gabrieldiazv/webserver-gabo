@@ -1,5 +1,5 @@
 name: Veracode Static Analysis Demo
-on: workflow_dispatch
+on: [push]
     
 jobs:
   static_analysis:
