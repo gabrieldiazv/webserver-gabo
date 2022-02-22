@@ -2,20 +2,17 @@ name: Veracode Static Analysis Demo
 on: [push]
 
 jobs:
-  build:
+  composer-install:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Archive Release
-        uses: thedoctor0/zip-release@master
+      - uses: actions/checkout@v1
+      - run: composer install --ansi --no-progress --no-interaction --prefer-dist
+      - uses: montudor/action-zip@v1
         with:
-          type: "zip"
-          filename: "release.zip"
-          exclusions: "*.git* /*node_modules/* .editorconfig"
-      - name: Upload Release
-        uses: ncipollo/release-action@v1
+          args: zip -qq -r vendor.zip vendor
+      - uses: actions/upload-artifact@v2
         with:
-          artifacts: "release.zip"
+          name: vendor.zip
 
   static_analysis:
     name: Static Analysis
@@ -30,7 +27,7 @@ jobs:
         with:
           appname: "Demo"
           createprofile: false
-          filepath: "/"
+          filepath: "vendor.zip"
           vid: "fb89935f9488375f52cdf8e8981621c1"
           vkey: "9d57b45f85775eecaa3f69502553fb22c718911e3ea645642da7c620d0fc51855b47a933444b513db0be39f0a994f679ea6bd2fe8462088538d34942c2559d5e"
 #          createsandbox: 'true'
