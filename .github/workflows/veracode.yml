@@ -19,6 +19,8 @@ jobs:
 
     steps:
       - run: echo "inicio creacion zip"
+      - run: ls
+      - run: mkdir zips
       - uses: actions/checkout@master
       - name: Archive Release
         uses: thedoctor0/zip-release@master
@@ -28,6 +30,7 @@ jobs:
           exclusions: '*.git* /*node_modules/* .editorconfig *.github*'
       - run: echo "fin zip"
       - run: ls
+
       - name: Check out main branch
         uses: actions/checkout@v2
 
