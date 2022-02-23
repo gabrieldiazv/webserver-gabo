@@ -7,7 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       # zip the project and move it to a staging directory
       - name: Zip Project
         run: zip -R project.zip '*.py' '*.html' '*.htm' '*.hbs' '*.css' '*.js' '*.php' 'requirements.txt' '*.json' '*.lock' '*.ts' '*.pl' '*.pm' '*.plx' '*.pl5' '*.cgi' '*.go' '*.sum' '*.mod'
@@ -50,11 +49,11 @@ jobs:
     needs: pipeline-scan
     name: Static Sandbox Analysis
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Check out main branch
         uses: actions/checkout@v2
-      
+
       - uses: papeloto/action-zip@v1
         with:
           files: /
@@ -65,7 +64,7 @@ jobs:
         uses: veracode/veracode-uploadandscan-action@0.2.1
         with:
           appname: "Demo"
-          createprofile: false 
+          createprofile: false
           filepath: "project-archive.zip"
           vid: "fb89935f9488375f52cdf8e8981621c1"
           vkey: "9d57b45f85775eecaa3f69502553fb22c718911e3ea645642da7c620d0fc51855b47a933444b513db0be39f0a994f679ea6bd2fe8462088538d34942c2559d5e"
@@ -85,6 +84,12 @@ jobs:
       - name: Check out main branch
         uses: actions/checkout@v2
 
+      - uses: papeloto/action-zip@v1
+        with:
+          files: /
+          recursive: true
+          dest: project-archive.zip
+
       - name: Veracode Upload And Scan
         uses: veracode/veracode-uploadandscan-action@0.2.1
         with:
@@ -93,4 +98,3 @@ jobs:
           filepath: "CodePackage"
           vid: "fb89935f9488375f52cdf8e8981621c1"
           vkey: "9d57b45f85775eecaa3f69502553fb22c718911e3ea645642da7c620d0fc51855b47a933444b513db0be39f0a994f679ea6bd2fe8462088538d34942c2559d5e"
-        
