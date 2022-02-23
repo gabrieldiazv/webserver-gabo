@@ -50,11 +50,11 @@ jobs:
     needs: pipeline-scan
     name: Static Sandbox Analysis
     runs-on: ubuntu-latest
+    container:
+      image: veracode/pipeline-scan:latest
+      options: --user root
 
     steps:
-      - name: Check out main branch
-        uses: actions/checkout@v2
-       
       - name: Retrieve artifact
         uses: actions/download-artifact@v2
         with:
@@ -64,6 +64,9 @@ jobs:
       - name: entrar en la ruta
         run: |
           cd /github/home
+      
+      - name: Check out main branch
+        uses: actions/checkout@v2
       
       - name: Veracode Upload And Scan
         uses: veracode/veracode-uploadandscan-action@0.2.1
