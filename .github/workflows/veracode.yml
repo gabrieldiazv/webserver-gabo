@@ -60,10 +60,10 @@ jobs:
         with:
           name: CodePackage
           path: /github/home
-
-      - name: Veracode Upload And Scan
         run: |
           cd /github/home
+
+      - name: Veracode Upload And Scan
         uses: veracode/veracode-uploadandscan-action@0.2.1
         with:
           appname: "Demo"
