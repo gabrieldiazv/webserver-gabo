@@ -66,7 +66,7 @@ jobs:
         with:
           appname: "Demo"
           createprofile: false
-          filepath: "/github/home/CodePackage.zip"
+          filepath: "project.zip"
           vid: "fb89935f9488375f52cdf8e8981621c1"
           vkey: "9d57b45f85775eecaa3f69502553fb22c718911e3ea645642da7c620d0fc51855b47a933444b513db0be39f0a994f679ea6bd2fe8462088538d34942c2559d5e"
 #          createsandbox: 'true'
