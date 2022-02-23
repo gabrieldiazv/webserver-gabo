@@ -2,45 +2,40 @@ name: Veracode Static Analysis Demo
 on: [push]
 
 jobs:
-  # build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@master
-  #   - name: Archive Release
-  #     uses: thedoctor0/zip-release@master
-  #     with:
-  #       type: 'zip'
-  #       filename: 'zips/release.zip'
-  #       exclusions: '*.git* /*node_modules/* .editorconfig *.github*'
-
-  static_analysis:
-    name: Static Analysis
+  build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
     steps:
-      - run: echo "inicio creacion zip"
-      # - run: mkdir -p ~/new/artifact
-      - uses: actions/checkout@master
-      - name: Archive Release
-        uses: thedoctor0/zip-release@master
+      - uses: actions/checkout@v2
+
+      # zip the project and move it to a staging directory
+      - name: Zip Project
+        run: zip -R project.zip '*.py' '*.js' '*.php' '*.ts' '*.css' '*.hbs'
+        env:
+          build-name: project.zip
+
+      - name: Archive package
+        uses: actions/upload-artifact@v2
         with:
-          type: 'zip'
-          directory: 'new/artifact'
-          filename: 'release.zip'
-          exclusions: '*.git* /*node_modules/* .editorconfig *.github*'
-      - run: echo "fin zip"
+          name: CodePackage
+          path: project.zip
 
-      # - name: Check out main branch
-      #   uses: actions/checkout@v2
+  # static_analysis:
+  #   name: Static Analysis
+  #   runs-on: ubuntu-latest
 
-      # - name: Veracode Upload And Scan
-      #   uses: veracode/veracode-uploadandscan-action@0.2.1
-      #   with:
-      #     appname: "Demo"
-      #     createprofile: false
-      #     filepath: "release.zip"
-      #     vid: "fb89935f9488375f52cdf8e8981621c1"
-      #     vkey: "9d57b45f85775eecaa3f69502553fb22c718911e3ea645642da7c620d0fc51855b47a933444b513db0be39f0a994f679ea6bd2fe8462088538d34942c2559d5e"
+  #   steps:
+  #     - name: Check out main branch
+  #       uses: actions/checkout@v2
+
+  #     - name: Veracode Upload And Scan
+  #       uses: veracode/veracode-uploadandscan-action@0.2.1
+  #       with:
+  #         appname: "Demo"
+  #         createprofile: false
+  #         filepath: "release.zip"
+  #         vid: "fb89935f9488375f52cdf8e8981621c1"
+  #         vkey: "9d57b45f85775eecaa3f69502553fb22c718911e3ea645642da7c620d0fc51855b47a933444b513db0be39f0a994f679ea6bd2fe8462088538d34942c2559d5e"
 #          createsandbox: 'true'
 #          sandboxname: 'SANDBOXNAME'
 #          scantimeout: 0
