@@ -60,6 +60,8 @@ jobs:
         with:
           name: CodePackage
           path: /github/home
+      
+      - name: en ruta
         run: |
           cd /github/home
 
