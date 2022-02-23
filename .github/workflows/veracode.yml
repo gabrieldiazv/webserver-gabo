@@ -10,7 +10,7 @@ jobs:
 
       # zip the project and move it to a staging directory
       - name: Zip Project
-        run: zip -R project.zip '*.py' '*.js' '*.php' '*.ts' '*.css' '*.hbs'
+        run: zip -R project.zip '*.py' '*.html' '*.htm' '*.hbs' '*.css' '*.js' '*.php' 'requirements.txt' '*.json' '*.lock' '*.ts' '*.pl' '*.pm' '*.plx' '*.pl5' '*.cgi' '*.go' '*.sum' '*.mod'
         env:
           build-name: project.zip
 
@@ -19,28 +19,50 @@ jobs:
         with:
           name: CodePackage
           path: project.zip
-
-  static_analysis:
+  
+  pipeline-scan:
     needs: build
-    name: Static Analysis
     runs-on: ubuntu-latest
+    container: 
+      image: veracode/pipeline-scan:latest
+      options: --user root # our normal luser doesn't have privs to write to github directories
 
     steps:
-      - name: Check out main branch
-        uses: actions/checkout@v2
+    - name: Retrieve artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: CodePackage
+        path: /github/home
+    
+    #  Submit  project to pipeline scan
+    - name: Pipeline Scan
+      run: |
+        cd /github/home
+        java -jar /opt/veracode/pipeline-scan.jar --veracode_api_id="fb89935f9488375f52cdf8e8981621c1" --veracode_api_key="9d57b45f85775eecaa3f69502553fb22c718911e3ea645642da7c620d0fc51855b47a933444b513db0be39f0a994f679ea6bd2fe8462088538d34942c2559d5e" --fail_on_severity="Very High, High" --file="project.zip" --json_output_file="results.json"
+      continue-on-error: true
 
-      - uses: actions/upload-artifact@v2
-        with:
-          path: binaries_to_upload/*.js
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ScanResults
+        path: /github/home/results.json
 
-      - name: Veracode Upload And Scan
-        uses: veracode/veracode-uploadandscan-action@0.2.1
-        with:
-          appname: "Demo"
-          createprofile: false
-          filepath: "binaries_to_upload/*.js"
-          vid: "fb89935f9488375f52cdf8e8981621c1"
-          vkey: "9d57b45f85775eecaa3f69502553fb22c718911e3ea645642da7c620d0fc51855b47a933444b513db0be39f0a994f679ea6bd2fe8462088538d34942c2559d5e"
+  # static_analysis:
+  #   needs: build
+  #   name: Static Analysis
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Check out main branch
+  #       uses: actions/checkout@v2
+
+  #     - name: Veracode Upload And Scan
+  #       uses: veracode/veracode-uploadandscan-action@0.2.1
+  #       with:
+  #         appname: "Demo"
+  #         createprofile: false
+  #         filepath: "project.zip"
+  #         vid: "fb89935f9488375f52cdf8e8981621c1"
+  #         vkey: "9d57b45f85775eecaa3f69502553fb22c718911e3ea645642da7c620d0fc51855b47a933444b513db0be39f0a994f679ea6bd2fe8462088538d34942c2559d5e"
 #          createsandbox: 'true'
 #          sandboxname: 'SANDBOXNAME'
 #          scantimeout: 0
