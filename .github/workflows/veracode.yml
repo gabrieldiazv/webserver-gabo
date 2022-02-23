@@ -55,6 +55,12 @@ jobs:
       - name: Check out main branch
         uses: actions/checkout@v2
        
+      - name: Retrieve artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: CodePackage
+          path: /github/home
+      
       - name: Veracode Upload And Scan
         uses: veracode/veracode-uploadandscan-action@0.2.1
         with:
