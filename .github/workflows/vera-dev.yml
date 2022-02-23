@@ -7,7 +7,6 @@ on:
 jobs:
   # develop
   static_sandbox_analysis:
-    needs: pipeline-scan
     name: Static Sandbox Analysis
     runs-on: ubuntu-latest
 

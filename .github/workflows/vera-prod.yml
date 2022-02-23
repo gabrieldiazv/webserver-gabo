@@ -6,7 +6,6 @@ on:
 
 jobs:
   static_policy_analysis:
-    needs: static_sandbox_analysis
     name: Static Policy Analysis
     runs-on: ubuntu-latest
 
