@@ -47,8 +47,8 @@ jobs:
           path: /github/home/results.json
 
   static_sandbox_analysis:
-    needs: build
-    name: Static Analysis
+    needs: pipeline-scan
+    name: Static Sandbox Analysis
     runs-on: ubuntu-latest
 
     steps:
@@ -71,8 +71,8 @@ jobs:
   #          criticality: 'VeryHigh'
 
   static_policy_analysis:
-    needs: build
-    name: Static Analysis
+    needs: static_sandbox_analysis
+    name: Static Policy Analysis
     runs-on: ubuntu-latest
 
     steps:
